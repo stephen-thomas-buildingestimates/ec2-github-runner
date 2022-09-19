@@ -37,6 +37,11 @@ inputs:
       The runner doesn't require any inbound traffic. However, outbound traffic should be allowed.
       This input is required if you use the 'start' mode.
     required: false
+  ebs-volume-size:
+      description: >-
+      EC2 EBS volume size.
+      This input is required if you use the 'start' mode.
+    required: false
   label:
     description: >-
       Name of the unique label assigned to the runner.
