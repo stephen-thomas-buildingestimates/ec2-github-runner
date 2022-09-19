@@ -43,12 +43,20 @@ async function startEc2Instance(label, githubRegistrationToken) {
     SecurityGroupIds: [config.input.securityGroupId],
     IamInstanceProfile: { Name: config.input.iamRoleName },
     TagSpecifications: config.tagSpecifications,
+    BlockDeviceMappings: [
+      {
+        DeviceName: "/dev/xvda",
+        Ebs: {
+          VolumeSize: config.input.ebsVolumeSize
+        }
+      }
+    ]
   };
-
+  core.info(`AWS EC2 instance params ${params}`);
   try {
     const result = await ec2.runInstances(params).promise();
     const ec2InstanceId = result.Instances[0].InstanceId;
-    core.info(`AWS EC2 instance ${ec2InstanceId} is started`);
+    core.info(`AWS EC2 instance ${ec2InstanceId} is started (with ${params})`);
     return ec2InstanceId;
   } catch (error) {
     core.error('AWS EC2 instance starting error');
